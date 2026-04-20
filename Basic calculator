@@ -1,0 +1,25 @@
+class Solution:
+    def calculate(self, s: str) -> int:
+        stack = []
+        current_res = 0
+        num = 0
+        sign = 1  # 1 for '+', -1 for '-'
+        
+        for char in s:
+            if char.isdigit():
+                num = num * 10 + int(char)
+            elif char in "+-":
+                current_res += sign * num
+                num = 0
+                sign = 1 if char == '+' else -1
+            elif char == '(':
+                stack.append(current_res)
+                stack.append(sign)
+                current_res = 0
+                sign = 1
+            elif char == ')':
+                current_res += sign * num
+                num = 0
+                current_res *= stack.pop()
+                current_res += stack.pop()
+        return current_res + (sign * num)
